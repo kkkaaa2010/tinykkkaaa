@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="GB2312"?>
+<componentConfig>
+	<!-- 
+	<component name="cache" isEnabled="true" handler="com.neusoft.unieap.config.handler.CacheHandler" description="缓存服务">
+	  <CONFIG_BEAN>CacheManagerImpl</CONFIG_BEAN>
+	  <GROUP_NAME>cacheSynchronize</GROUP_NAME>
+	  <CONFIG_BEAN_FILE>/WEB-INF/conf/unieap/cache/applicationContext-cache.xml</CONFIG_BEAN_FILE>
+	  <CONFIG_File>WEB-INF/conf/unieap/cache/ehcache.xml</CONFIG_File>
+	</component>
+	 -->
+	<component name="PrimaryKeyGenerator" isEnabled="true" handler="com.tinykkkaaa.platform.core.console.util.primarykey.DBPrimaryKeyGenertorInitComponent" description="主键生成器初始化">
+  	  <generator class="com.tinykkkaaa.platform.core.console.util.primarykey.CachePrimaryKeyGeneratorWithOracle">
+  	    <fetchSize>20</fetchSize>
+  	  	<siteCode>ll</siteCode>
+  	  	<hashCodeLength>2</hashCodeLength>
+  	  	<keyLength>20</keyLength>
+  	  	<increment>1</increment>  	 
+  	  </generator>
+	</component>
+</componentConfig>
