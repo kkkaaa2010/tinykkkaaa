@@ -63,7 +63,7 @@
 		<div data-options="region:'south',border:false" 
 			 style="height:30px;background:#B3DFDA;padding:10px;overflow:hidden;">
 			<div style="text-align: center; height:15px;line-height:15px;">
-				Copyright © 2009-2016 WEIBO 我是陆亮kkkaaa2010[2011]2046-296号京ICP		
+				Copyright © 1999-2016, tinykkkaaa, All Rights Reserved	
 			</div>
 		</div>
 		<div data-options="region:'center'" style="overflow:hidden">

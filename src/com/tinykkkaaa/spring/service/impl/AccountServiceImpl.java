@@ -116,4 +116,9 @@ public class AccountServiceImpl implements AccountService {
 			throws Exception {
 		return accountDao.delDetailAccountById(params);
 	}
+
+	@Override
+	public String addBill(Map<String, String> params) throws Exception {
+		return accountDao.addBill(params);
+	}
 }

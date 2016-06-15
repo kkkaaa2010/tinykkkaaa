@@ -1,3 +1,7 @@
-#Wed Dec 23 17:25:30 CST 2015
+#Wed Apr 27 14:33:21 CST 2016
 eclipse.preferences.version=1
+encoding//WebRoot/pages/bootstrap/pages/login.jsp=UTF-8
+encoding//WebRoot/pages/bootstrap/pages/register.jsp=UTF-8
+encoding//WebRoot/pages/index.jsp=UTF-8
+encoding//WebRoot/pages/platform/pages/taglib.jsp=UTF-8
 encoding/<project>=UTF-8

@@ -22,7 +22,9 @@ public class ComponentInitBean implements InitializingBean, ServletContextAware 
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
+		System.out.println("------------------------------初始化系统组件开始------------------------------");
 		new ComponentPlugin().init(this.context, componentPath);
+		System.out.println("------------------------------初始化系统组件结束------------------------------");
 	}
 
 	@Override

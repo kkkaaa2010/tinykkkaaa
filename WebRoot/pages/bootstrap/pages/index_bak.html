@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BSindex</title>
+<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="bootstrap/css/css.css">
+<script type="text/javascript" src="javascript/jquery-1.11.3.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<style>
+.navbar-inverse .navbar-brand{
+	color: #fff;
+}
+</style>
+<script type="text/javascript">
+	$(document).ready(function(){
+		//$('#mytab1 a[href="#xw"]').tab('show');
+	  	//$('#mytab1 a:first').tab('show');
+	  	//$('#mytab1 a:last').tab('show');
+	  	//$('#mytab1 li:eq(1) a').tab('show');
+
+		$('#mytab1').on('shown.bs.tab', function(e){
+			var txt = $(e.target).attr('href');
+			$(txt).html('123');
+		});
+	});
+</script>
+</head>
+<body>
+	<nav class="nav navbar-default navbar-fixed-top"
+		style="filter: alpha(Opacity = 90); -moz-opacity: 0.9; opacity: 0.9"
+		role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<a href="#" class="navbar-brand">
+					<img style="height: 50px; margin-top:-15px;" src="bootstrap/images/logo.jpg">
+				</a>
+			</div>
+
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="#">首页</a>
+				</li>
+				<li><a href="#">文章</a>
+				</li>
+				<li><a href="#">消息</a>
+				</li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">内容<span class="caret"></span></a>
+					<ul class="bs-menu dropdown-menu">
+						<li><a href="#">easyui</a></li>
+						<li class="divider"></li>
+						<li class="dropdown-submenu">
+							<a href="#">demo</a>
+							<ul class="bs-submenu dropdown-menu">
+								<li><a href="#">demo1</a></li>
+								<li><a href="#">demo2</a></li>
+								<li><a href="#">demo3</a></li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+			<div class="navbar-form navbar-right">
+				<div class="form-group">
+					<div class="input-group">
+						<input type="text" class="form-control" placeholder="请输入关键字" />
+						<div class="input-group-btn">
+							<button class="btn btn-block">
+								<span class="glyphicon glyphicon-search"></span>
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="form-group" style="padding-left: 10px; margin: 0px 12px;">
+					<a href="#" class="navbar-link" style="color: #D2D2D2;">登录</a> 
+					<span style="color: #D2D2D2; padding-left: 5px;">|</span> 
+					<a href="#" class="navbar-link" style="color: #D2D2D2; padding-left: 5px;">注册</a>
+				</div>
+			</div>
+		</div>
+	</nav>
+	<div style="height: 60px;"></div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<ul id="mytab1" class="nav nav-tabs">
+					<li class="active">
+						<a href="#xw" data-toggle="tab">新闻</a>
+					</li>
+					<li>
+						<a href="#ty" data-toggle="tab">体育</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane fade in active" id="xw">
+						<p><a href="#">腾讯、华为、京东、红帽、VMware的Container实践PPT集萃</a><span class="pull-right">2016-04-20</span></p>
+						<p><a href="#">相约周五，百家公司齐聚SDCC深圳站（附名单及参会提醒）</a><span class="pull-right">2016-04-20</span></p>
+						<p><a href="#">40位+超强讲师阵容！中国云计算技术大会部分讲师议题公布</a><span class="pull-right">2016-04-20</span></p>
+						<p><a href="#">Android Studio 2.0 发布</a><span class="pull-right">2016-04-20</span></p>
+						<p><a href="#">构建BaaS云数据（CloudData）服务—mongo集群架构设计</a><span class="pull-right">2016-04-20</span></p>
+					</div>
+					<div class="tab-pane fade" id="ty">
+						<p><a href="#">正播灰熊VS马刺II 老鹰轻取绿军2比0</a><span class="pull-right">2016-04-20</span></p>
+						<p><a href="#">穆勒2球拜仁2-0进德国杯决赛</a><span class="pull-right">2016-04-20</span></p>
+						<p><a href="#">17时直播丁俊晖出战斯诺克世锦赛</a><span class="pull-right">2016-04-20</span></p>
+						<p><a href="#">欧文:中国队有1人最吸引我</a><span class="pull-right">2016-04-20</span></p>
+						<p><a href="#">巴萨内讧!内马尔辱骂队友</a><span class="pull-right">2016-04-20</span></p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<ul class="breadcrumb">
+					<li><a href="#">demo1</a></li>
+					<li><a href="#" class="text-muted">demo1-1</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4">
+				<div class="thumbnail">
+					<img src="bootstrap/images/1.jpg">
+					<div class="caption">
+						<h4><a>链接标题XXX1</a></h4>
+						<p>我是说明XXX1</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="thumbnail">
+					<img src="bootstrap/images/1.jpg">
+					<div class="caption">
+						<h4><a>链接标题XXX2</a></h4>
+						<p>我是说明XXX2</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="thumbnail">
+					<img src="bootstrap/images/1.jpg">
+					<div class="caption">
+						<h4><a>链接标题XXX3</a></h4>
+						<p>我是说明XXX3</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4">
+				<div class="thumbnail">
+					<img src="bootstrap/images/1.jpg">
+					<div class="caption">
+						<h4><a>链接标题XXX4</a></h4>
+						<p>我是说明XXX4</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="thumbnail">
+					<img src="bootstrap/images/1.jpg">
+					<div class="caption">
+						<h4><a>链接标题XXX5</a></h4>
+						<p>我是说明XXX5</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="col-md-6">
+					<div class="thumbnail">
+						<img src="bootstrap/images/1.jpg" />
+						<div class="caption">
+							<h3>
+								<a>链接标题XXX6</a>
+							</h3>
+							<p>我是说明XXX6</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="page-header">
+						<h2>KA介绍</h2>
+					</div>
+					<p>KA说明</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

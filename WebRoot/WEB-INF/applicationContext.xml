@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+        
+	<!-- 系统组件初始化 -->
+	<bean class="com.tinykkkaaa.platform.framework.web.ComponentInitBean">
+		<property name="componentPath" value="/WEB-INF/conf/platform/component/ComponentConfig.xml" />
+	</bean>
+	
+	<bean id="systemManager" class="com.tinykkkaaa.platform.core.SystemManager" factory-method="getInstance">
+        <property name="dataPersistenceManager" ref="dataPersistenceManager"></property>
+        <property name="cacheManager" ref="cacheManager"></property>
+        <property name="codeTableManager" ref="codeTableManager"></property>
+    </bean>
+	
+	<bean id="dataPersistenceManager" class="com.tinykkkaaa.platform.core.dao.DataPersistenceManager" factory-method="getInstance">
+        <property name="defaultDataSource" value="oraKA"/>
+        <property name="dataSources">
+            <map>
+                <entry key="oraKA">
+                    <ref bean="oracleDataSource"/>
+                </entry>
+                <!-- 
+                <entry key="mysql">
+                    <ref bean="mySqlDataSource"/>
+                </entry>
+                 -->
+            </map>
+        </property>
+    </bean>
+    
+    <bean id="oracleDataSource" class="com.tinykkkaaa.platform.core.dao.impl.jdbc.DataSourceDBCPImpl">
+        <property name="sourceName" value="test"/>
+        <property name="sourceType" value="JDBC"/>
+        <property name="dpo">
+            <bean class="com.tinykkkaaa.platform.core.dao.impl.jdbc.DataPersistenceObjectOracleImpl">
+            </bean>
+        </property>
+        <property name="dataSource">
+            <ref bean="oraJDBCdataSource" />
+        </property>
+    </bean>
+
+    <bean id="oraJDBCdataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="oracle.jdbc.OracleDriver"/>
+        <property name="url" value="jdbc:oracle:thin:@127.0.0.1:1521:ORCL"/>
+        <property name="username" value="DB_KA"/>
+        <property name="password" value="DB_KA"/>
+    </bean>
+	
+	<bean id="cacheManager" class="com.tinykkkaaa.platform.core.cache.CacheManager">
+        <property name="cache" ref="concurrentHMCacheImpl"/>
+        <property name="corePoolSize" value="500"/>
+        <property name="maximumPoolSize" value="10000"/>
+        <property name="keepAliveTime" value="5"/>
+    </bean>
+    
+    <bean id="jcsCacheImpl" class="com.tinykkkaaa.platform.core.cache.impl.JCSCacheImpl">
+    	<property name="cacheFilePath" value="/WEB-INF/conf/platform/cache/cache.ccf"></property>
+    </bean>
+    <bean id="concurrentHMCacheImpl" class="com.tinykkkaaa.platform.core.cache.impl.ConcurrentHMCacheImpl"></bean>
+    
+    <bean id="codeTableManager" class="com.tinykkkaaa.platform.core.codetable.CodeTableManager" init-method="run">
+        <property name="config">
+            <list>
+                <!-- <value>/WEB-INF/conf/platform/codetable/pt-codetable.xml</value> -->
+                <value>/WEB-INF/conf/platform/codetable/account-codetable.xml</value>
+            </list>
+        </property>
+        <property name="cacheManager" ref="cacheManager"></property>
+        <property name="dataPersistenceManager" ref="dataPersistenceManager"></property>
+    </bean>
+</beans>

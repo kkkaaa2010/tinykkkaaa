@@ -5,6 +5,18 @@
 	id="WebApp_ID" version="2.5">
 	
 	<display-name>tinykkkaaa</display-name>
+	
+	<welcome-file-list>
+		<welcome-file>/pages/index.jsp</welcome-file>
+	</welcome-file-list>
+	
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/applicationContext.xml,/WEB-INF/applicationContext-jms.xml</param-value>
+	</context-param>
+	<listener>
+		 <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
     
     <!-- 编码过滤器 -->
 	<filter>
@@ -36,26 +48,6 @@
 		<servlet-name>springMVC</servlet-name>
 		<!-- 此处可以可以配置成*.do，对应struts的后缀习惯 -->
 		<url-pattern>*.do</url-pattern>
+		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
-
-	<!-- 
-	<servlet>
-		<servlet-name>action</servlet-name>
-		<servlet-class>com.tinykkkaaa.platform.framework.web.action.ComponentAction</servlet-class>
-		<init-param>
-			<param-name>debug</param-name>
-			<param-value>2</param-value>
-		</init-param>
-		<init-param>
-			<param-name>config</param-name>
-			<param-value>/WEB-INF/struts-config.xml
-            </param-value>
-		</init-param>
-		<init-param>
-			<param-name>EAPApplication</param-name>
-			<param-value>/WEB-INF/applications.xml</param-value>
-		</init-param>
-		<load-on-startup>2</load-on-startup>
-	</servlet>
-	 -->
 </web-app>

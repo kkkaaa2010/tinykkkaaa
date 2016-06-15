@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<codetable>
+	<codeinfo>
+		<datasource>oraKA</datasource> 
+		<name>T_DM_ACCOUNTTYPE</name>
+		<table_name>T_DM_ACCOUNTTYPE</table_name>
+		<code>ACCOUNTTYPE_DM</code>
+		<code_name>ACCOUNTTYPE_MC</code_name>
+		<parent_table_name></parent_table_name>
+		<parent_code_id></parent_code_id>
+	</codeinfo>
+	<codeinfo>
+		<datasource>oraKA</datasource> 
+		<name>T_DM_DETAILTYPE</name>
+		<table_name>T_DM_DETAILTYPE</table_name>
+		<code>DETAILTYPE_DM</code>
+		<code_name>DETAILTYPE_MC</code_name>
+		<parent_table_name></parent_table_name>
+		<parent_code_id></parent_code_id>
+	</codeinfo>
+	<codeinfo>
+		<datasource>oraKA</datasource> 
+		<name>T_DM_DETAILXM</name>
+		<table_name>T_DM_DETAILXM</table_name>
+		<code>DETAILXM_DM</code>
+		<code_name>DETAILXM_MC</code_name>
+		<parent_table_name></parent_table_name>
+		<parent_code_id></parent_code_id>
+	</codeinfo>
+</codetable>

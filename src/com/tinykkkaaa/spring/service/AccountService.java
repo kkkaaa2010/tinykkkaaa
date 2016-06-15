@@ -29,4 +29,6 @@ public interface AccountService {
 	public String updateDetailAccount(DetailAccountVO vo) throws Exception;
 	public JSONObject getDetailAccountById(Map<String, String> params) throws Exception;
 	public String delDetailAccountById(Map<String, String> params) throws Exception;
+	
+	public String addBill(Map<String, String> params) throws Exception;
 }

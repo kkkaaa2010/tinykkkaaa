@@ -7,4 +7,8 @@ public class DBAccessHelper {
 		DBPrimaryKeyGeneratorMgr instance = DBPrimaryKeyGeneratorMgr.getInstance();
 		return instance.getPrimaryKeyGenerator().getNextKey(tableName,length);
 	}
+	
+	public static final String getSequence(String sequenceName, int length){
+		return DBPrimaryKeyGeneratorMgr.getInstance().getPrimaryKeyGenerator().getSequence(sequenceName, length);
+	}
 }

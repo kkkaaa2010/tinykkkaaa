@@ -1,5 +1,6 @@
 package com.tinykkkaaa.spring.controller;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,11 +13,19 @@ import net.sf.json.JSONObject;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.tinykkkaaa.comm.util.CommUtil;
 import com.tinykkkaaa.comm.util.JsonUtil;
+import com.tinykkkaaa.platform.core.SystemManager;
+import com.tinykkkaaa.platform.core.codetable.CodeTableVO;
+import com.tinykkkaaa.platform.framework.jms.service.ProducerService;
+import com.tinykkkaaa.platform.framework.jms.service.impl.ProducerObjServiceImpl;
+import com.tinykkkaaa.platform.framework.jms.vo.Excel;
 import com.tinykkkaaa.spring.service.AccountService;
 import com.tinykkkaaa.spring.vo.DetailAccountVO;
 import com.tinykkkaaa.spring.vo.DetailXmVO;
@@ -101,6 +110,7 @@ public class AccountController {
 		return forward;
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping("/getBillList")
 	@ResponseBody
 	public JSONObject getBillList(@RequestParam String params) throws Exception{
@@ -206,6 +216,7 @@ public class AccountController {
 		return jsonMessage;
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping("/getDetailAccountById")
 	@ResponseBody
 	public JSONObject getDetailAccountById(@RequestParam String params) throws Exception{
@@ -213,6 +224,7 @@ public class AccountController {
 		return accountService.getDetailAccountById(paramsMap);
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping("/delDetailAccountById")
 	@ResponseBody
 	public String delDetailAccountById(@RequestParam String params) throws Exception{
@@ -228,5 +240,68 @@ public class AccountController {
 	public String billPortal() throws Exception{
 		String forward = "account/billPortal";
 		return forward;
+	}
+	
+	/**
+	 * add at 2016-04-12
+	 * 历史账单补录
+	 */
+	@RequestMapping("/addBillHistory")
+	public String addBillHistory() throws Exception{
+		String forward = "account/addBillHistory";
+		return forward;
+	}
+	
+	@RequestMapping("/toAddBill")
+	public String toAddBill(HttpServletRequest request, Model model) throws Exception{
+		String forward = "account/toAddBill";
+		return forward;
+	}
+	
+	@RequestMapping("/getAccountType")
+	@ResponseBody
+	public JSONArray getAccountType() throws Exception{
+		List<CodeTableVO> list = SystemManager.getInstance().getCodeTableManager().getTableList("T_DM_ACCOUNTTYPE");
+		JSONArray ja = new JSONArray();
+		for(CodeTableVO vo : list){
+			JSONObject jo = new JSONObject();
+			jo.put("accouonttype_dm", vo.getCode());
+			jo.put("accouonttype_mc", vo.getValue());
+			ja.add(jo);
+		}
+		return ja;
+	}
+	
+	@RequestMapping("/addBill")
+	@ResponseBody
+	public JSONObject addBill(@RequestParam String paramsStr) throws Exception{
+		JSONObject jsonMessage = new JSONObject();
+		@SuppressWarnings("unchecked")
+		Map<String, String> paramsMap = JsonUtil.convertToObject(paramsStr, Map.class);
+		jsonMessage.put("message", accountService.addBill(paramsMap));
+		return jsonMessage;
+	}
+	
+	@RequestMapping("/toUploadBill")
+	public String toUploadBill() throws Exception{
+		String forward = "account/toUploadBill";
+		return forward;
+	}
+	
+    @RequestMapping("/uploadFile")
+    public String upload(@RequestParam("excelFile") MultipartFile multipartFile, HttpServletRequest request, Model model) throws Exception{
+		String path = request.getSession().getServletContext().getRealPath("")+"/userFiles/temp";
+		int dotPosition = multipartFile.getOriginalFilename().indexOf(".");
+		String fileName = multipartFile.getOriginalFilename().substring(0, dotPosition)+CommUtil.getUUID()
+						  +"."+multipartFile.getOriginalFilename().substring(dotPosition+1);
+		String fullFilePath = path + "/" + fileName;
+		FileCopyUtils.copy(multipartFile.getBytes(), new File(fullFilePath));
+		
+		//发送消息(导入EXCEL操作用JMS完成)
+		ProducerService producer = ProducerObjServiceImpl.getInstance();
+		producer.sendMessage(new Excel(null, fullFilePath));
+		
+		model.addAttribute("message", "01");
+		return "account/toUploadBill";
 	}
 }

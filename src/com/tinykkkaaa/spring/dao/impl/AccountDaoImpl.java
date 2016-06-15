@@ -16,10 +16,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.tinykkkaaa.comm.util.CommUtil;
 import com.tinykkkaaa.comm.util.DateUtil;
 import com.tinykkkaaa.comm.util.QueryUtil;
+import com.tinykkkaaa.platform.framework.dao.JdbcTemplateCallBack;
 import com.tinykkkaaa.spring.dao.AccountDao;
-import com.tinykkkaaa.spring.dao.query.JdbcTemplateCallBack;
 import com.tinykkkaaa.spring.vo.DetailAccountVO;
 import com.tinykkkaaa.spring.vo.DetailAccountXmVO;
 import com.tinykkkaaa.spring.vo.DetailXmVO;
@@ -717,5 +718,96 @@ public class AccountDaoImpl implements AccountDao {
 			sign = true;
 		}
 		return sign;
+	}
+
+	@Override
+	public String addBill(Map<String, String> params) throws Exception {
+		String message = "00";
+		String accounttype = params.get("accounttype");
+		String accounttime = params.get("accounttime");
+		
+		String sr_srxm = params.get("sr_srxm");
+		String sr_srsm = params.get("sr_srsm");
+		String sr_srsj = params.get("sr_srsj");
+		String sr_srje = params.get("sr_srje");
+		
+		String zc_zclx = params.get("zc_zclx");
+		String zc_zcxm = params.get("zc_zcxm");
+		String zc_zcsm = params.get("zc_zcsm");
+		String zc_zcsj = params.get("zc_zcsj");
+		String zc_zcje = params.get("zc_zcje");
+		
+		String tmpAccountid = DateUtil.strConvertStr(accounttime);
+		
+		//1. 获取最大DETAIL_ID
+		final String selectSql = "SELECT TO_NUMBER(MAX(DETAIL_ID)) AS DETAILID" +
+				" FROM T_SH_ACCOUNTDETAIL WHERE ACCOUNT_ID = '"+ tmpAccountid +"' AND ACCOUNTTYPE_DM = '"+ accounttype +"'";
+		Integer detailid = this.queryNullAble(new JdbcTemplateCallBack<Integer>() {
+			@Override
+			public Integer queryForObject(JdbcTemplate jdbcTemplate) {
+				return jdbcTemplate.queryForObject(selectSql, Integer.class);
+			}
+		});
+		if(detailid == null){
+			detailid = 1;
+		}else{
+			detailid += 1;
+		}
+		
+		//2. 查询账单表里时候存在该日记录信息
+		final String selectSql2 = "SELECT DISTINCT ACCOUNT_ID FROM T_SH_ACCOUNTDETAIL WHERE ACCOUNT_ID = '"+ tmpAccountid +"'";
+		String hisID = this.queryNullAble(new JdbcTemplateCallBack<String>() {
+			@Override
+			public String queryForObject(JdbcTemplate jdbcTemplate) {
+				return jdbcTemplate.queryForObject(selectSql2, String.class);
+			}
+		});
+		
+		//3. 补录账单
+		String insertSql = "INSERT INTO T_SH_ACCOUNTDETAIL(DETAIL_ID, ACCOUNT_ID, ACCOUNTTYPE_DM, DETAILTYPE_DM, DETAILXM_DM, DETAIL_CONTENT, DETAIL_TIME, JE, LR_SJ)" +
+		   " VALUES (?, ?, ?, ?, ?, ?, ?, ?, SYSDATE)";
+		
+		Object[] objs = new Object[8];
+		if("01".equals(accounttype)){
+			objs[0] = detailid;
+			objs[1] = tmpAccountid;
+			objs[2] = accounttype;
+			objs[3] = null;
+			
+			objs[4] = sr_srxm;
+			objs[5] = sr_srsm;
+			objs[6] = sr_srsj;
+			objs[7] = Double.valueOf(sr_srje);
+		}else{
+			objs[0] = detailid;
+			objs[1] = tmpAccountid;
+			objs[2] = accounttype;
+			objs[3] = zc_zclx;
+			
+			objs[4] = zc_zcxm;
+			objs[5] = zc_zcsm;
+			objs[6] = zc_zcsj;
+			objs[7] = Double.valueOf(zc_zcje);
+		}
+		int i = this.jdbcTemplate.update(insertSql, objs);
+		
+		//4. 更新账单总表T_SH_ACCOUNT
+		if(CommUtil.isNull(hisID)){
+			if("01".equals(accounttype)){
+				insertSql = "INSERT INTO T_SH_ACCOUNT(ACCOUNT_ID, INCOME, ACCOUNT_DATE) "
+					+"SELECT '"+tmpAccountid+"', "+ sr_srje +", SYSDATE FROM DUAL";
+			}else{
+				insertSql = "INSERT INTO T_SH_ACCOUNT(ACCOUNT_ID, EXPENSES, ACCOUNT_DATE) "
+					+"SELECT '"+tmpAccountid+"', "+ zc_zcje +", SYSDATE FROM DUAL";
+			}
+			this.jdbcTemplate.update(insertSql);
+		}else{
+			this.setTotalAccount(tmpAccountid);
+		}
+		
+		if(i > 0){
+			message = "01";
+		}
+		return message;
 	}
 }
